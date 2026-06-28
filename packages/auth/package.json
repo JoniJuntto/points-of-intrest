@@ -1,0 +1,25 @@
+{
+  "name": "@poigame/auth",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@better-auth/expo": "catalog:",
+    "@poigame/db": "workspace:*",
+    "@poigame/env": "workspace:*",
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@poigame/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

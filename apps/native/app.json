@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "scheme": "poigame",
+    "userInterfaceStyle": "automatic",
+    "orientation": "default",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "poigame",
+    "slug": "poigame",
+    "plugins": ["expo-font"],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}
