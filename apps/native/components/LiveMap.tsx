@@ -1,8 +1,8 @@
-import type { Place, PlaceCategory } from "@/utils/trpc";
 import { AppleMaps, GoogleMaps } from "expo-maps";
-import { MapRef, LatLng } from "@/lib/common-types";
 import { useEffect } from "react";
 import { Platform } from "react-native";
+import type { LatLng, MapRef } from "@/lib/common-types";
+import type { Place, PlaceCategory } from "@/utils/trpc";
 import MapBackground from "./MapWebFallback";
 
 export default function LiveMap({

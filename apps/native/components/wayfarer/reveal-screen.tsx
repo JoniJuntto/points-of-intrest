@@ -7,8 +7,8 @@ import Confetti from "@/components/Confetti";
 import RevealPolaroid from "@/components/RevealPolaroid";
 import { useWayfarer } from "@/contexts/wayfarer-context";
 import { INK, MONO, SERIF, TEAL } from "@/lib/common-values";
-import { firstParam } from "@/lib/wayfarer-utils";
 import { tap } from "@/lib/haptics";
+import { firstParam } from "@/lib/wayfarer-utils";
 
 export function RevealScreen() {
 	const router = useRouter();
@@ -113,9 +113,7 @@ export function RevealScreen() {
 							marginBottom: 6,
 						}}
 					>
-						<Text
-							style={{ fontFamily: MONO, fontSize: 11, color: "#9a8f7e" }}
-						>
+						<Text style={{ fontFamily: MONO, fontSize: 11, color: "#9a8f7e" }}>
 							{capturedCount} OF {total} PLACES
 						</Text>
 						<Text

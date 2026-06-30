@@ -55,10 +55,7 @@ export function normalizeOverpassElements(elements: OverpassElement[]) {
 	});
 }
 
-export function shouldRefetchPlaces(
-	rows: PlaceRefreshRow[],
-	now = new Date(),
-) {
+export function shouldRefetchPlaces(rows: PlaceRefreshRow[], now = new Date()) {
 	if (rows.length < MIN_NEARBY_PLACES) return true;
 	const newestUpdatedAt = Math.max(
 		...rows.map(({ place }) => place.updatedAt.getTime()),

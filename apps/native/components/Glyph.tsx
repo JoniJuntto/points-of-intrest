@@ -1,5 +1,5 @@
-import type { PlaceCategory } from "@/utils/trpc";
 import Svg, { Circle, Polygon, Rect } from "react-native-svg";
+import type { PlaceCategory } from "@/utils/trpc";
 
 export default function Glyph({
 	cat,

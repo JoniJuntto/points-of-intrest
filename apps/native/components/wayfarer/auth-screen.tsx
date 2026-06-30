@@ -1,10 +1,9 @@
 import { Button } from "heroui-native";
 import { useState } from "react";
 import { Text, View } from "react-native";
-
+import { Container } from "@/components/container";
 import { SignIn } from "@/components/sign-in";
 import { SignUp } from "@/components/sign-up";
-import { Container } from "@/components/container";
 import { INK, SERIF } from "@/lib/common-values";
 
 export function AuthScreen() {
@@ -25,7 +24,7 @@ export function AuthScreen() {
 					>
 						Wayfarer
 					</Text>
-					<Text className="text-muted text-center text-sm">
+					<Text className="text-center text-muted text-sm">
 						Sign in to explore and capture places near you.
 					</Text>
 				</View>

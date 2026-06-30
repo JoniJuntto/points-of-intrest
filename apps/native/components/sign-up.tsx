@@ -10,7 +10,7 @@ import {
 	useToast,
 } from "heroui-native";
 import { useRef } from "react";
-import { Text, TextInput, View } from "react-native";
+import { Text, type TextInput, View } from "react-native";
 import z from "zod";
 
 import { authClient } from "@/lib/auth-client";
@@ -102,8 +102,8 @@ export function SignUp() {
 	});
 
 	return (
-		<Surface variant="secondary" className="p-4 rounded-lg">
-			<Text className="text-foreground font-medium mb-4">Create Account</Text>
+		<Surface variant="secondary" className="rounded-lg p-4">
+			<Text className="mb-4 font-medium text-foreground">Create Account</Text>
 
 			<form.Subscribe
 				selector={(state) => ({

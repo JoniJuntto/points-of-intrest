@@ -16,9 +16,8 @@ import {
 import { PlaceSheet } from "@/components/wayfarer/place-sheet";
 import { useWayfarer } from "@/contexts/wayfarer-context";
 import { ACCENT, INK, MONO, RANGE_M, SERIF, TEAL } from "@/lib/common-values";
-import { firstParam } from "@/lib/wayfarer-utils";
-
 import { tap } from "@/lib/haptics";
+import { firstParam } from "@/lib/wayfarer-utils";
 
 export function MapScreen() {
 	const router = useRouter();

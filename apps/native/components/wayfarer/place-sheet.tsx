@@ -1,6 +1,6 @@
 import BottomSheet, {
-	BottomSheetScrollView,
 	type BottomSheet as BottomSheetRef,
+	BottomSheetScrollView,
 } from "@expo/ui/community/bottom-sheet";
 import { useRouter } from "expo-router";
 import { useEffect, useRef } from "react";
@@ -11,13 +11,7 @@ import Glyph from "@/components/Glyph";
 import ProgressRing from "@/components/ProgressRing";
 import { CaptureIcon } from "@/components/wayfarer/icons";
 import { useWayfarer } from "@/contexts/wayfarer-context";
-import {
-	ACCENT,
-	INK,
-	MONO,
-	RANGE_M,
-	SERIF,
-} from "@/lib/common-values";
+import { ACCENT, INK, MONO, RANGE_M, SERIF } from "@/lib/common-values";
 import { bump } from "@/lib/haptics";
 import type { Place } from "@/utils/trpc";
 

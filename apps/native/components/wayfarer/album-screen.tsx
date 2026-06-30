@@ -10,8 +10,14 @@ import { INK, MONO, SERIF, TEAL } from "@/lib/common-values";
 export function AlbumScreen() {
 	const router = useRouter();
 	const insets = useSafeAreaInsets();
-	const { displayPlaceName, places, albumPlaces, total, capturedCount, progress } =
-		useWayfarer();
+	const {
+		displayPlaceName,
+		places,
+		albumPlaces,
+		total,
+		capturedCount,
+		progress,
+	} = useWayfarer();
 
 	return (
 		<View style={{ flex: 1, backgroundColor: "#F4ECDD" }}>

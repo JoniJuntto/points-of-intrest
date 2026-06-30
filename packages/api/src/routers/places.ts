@@ -17,8 +17,8 @@ import {
 	COLORS,
 	haversineMeters,
 	normalizeOverpassElements,
-	shouldRefetchPlaces,
 	type OverpassElement,
+	shouldRefetchPlaces,
 	toCategory,
 } from "../services/places";
 

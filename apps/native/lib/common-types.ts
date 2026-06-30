@@ -4,8 +4,5 @@ export type LatLng = {
 };
 
 export type MapRef = {
-	setCameraPosition: (options: {
-		coordinates: LatLng;
-		zoom?: number;
-	}) => void;
+	setCameraPosition: (options: { coordinates: LatLng; zoom?: number }) => void;
 };

@@ -1,54 +1,74 @@
 # poigame
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines React, TanStack Start, Elysia, TRPC, and more.
+Poigame is a location-based place collection game built as a Bun/Turborepo monorepo. The native app shows nearby places, captures visits with the camera and location, and syncs through the Elysia/tRPC API.
 
-## Features
+## Stack
 
-- **TypeScript** - For type safety and improved developer experience
-- **TanStack Start** - SSR framework with TanStack Router
-- **React Native** - Build mobile apps using React
-- **Expo** - Tools for React Native development
-- **TailwindCSS** - Utility-first CSS for rapid UI development
-- **Shared UI package** - shadcn/ui primitives live in `packages/ui`
-- **Elysia** - Type-safe, high-performance framework
-- **tRPC** - End-to-end type-safe APIs
-- **Bun** - Runtime environment
-- **Drizzle** - TypeScript-first ORM
-- **PostgreSQL** - Database engine
-- **Authentication** - Better-Auth
-- **Biome** - Linting and formatting
-- **Turborepo** - Optimized monorepo build system
+- **Native app:** Expo, React Native, Expo Router, HeroUI Native
+- **Web app:** React, TanStack Start, Tailwind CSS, shared shadcn/ui primitives
+- **API:** Elysia, tRPC, Better Auth
+- **Data:** PostgreSQL, Drizzle, S3-compatible object storage
+- **Tooling:** Bun, Turborepo, Biome, TypeScript
 
 ## Getting Started
 
-First, install the dependencies:
+Install dependencies:
 
 ```bash
 bun install
 ```
 
-## Database Setup
-
-This project uses PostgreSQL with Drizzle ORM.
-
-1. Make sure you have a PostgreSQL database set up.
-2. Update your `apps/server/.env` file with your PostgreSQL connection details.
-
-3. Apply the schema to your database:
+Start the local database and object storage:
 
 ```bash
-bun run db:push
+docker compose up -d db minio minio-init
 ```
 
-Then, run the development server:
+Create `apps/server/.env`:
+
+```env
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres
+BETTER_AUTH_SECRET=replace-with-at-least-32-characters
+BETTER_AUTH_URL=http://localhost:3000
+CORS_ORIGIN=http://localhost:3001
+S3_ENDPOINT=http://localhost:9000
+S3_REGION=us-east-1
+S3_BUCKET=poigame
+S3_ACCESS_KEY_ID=minioadmin
+S3_SECRET_ACCESS_KEY=minioadmin
+```
+
+Create `apps/web/.env`:
+
+```env
+VITE_SERVER_URL=http://localhost:3000
+```
+
+Create `apps/native/.env`:
+
+```env
+EXPO_PUBLIC_SERVER_URL=http://localhost:3000
+```
+
+Apply database migrations:
+
+```bash
+bun run db:migrate
+```
+
+Run everything:
 
 ```bash
 bun run dev
 ```
 
 Open [http://localhost:3001](http://localhost:3001) in your browser to see the web application.
-Use the Expo Go app to run the mobile application.
 The API is running at [http://localhost:3000](http://localhost:3000).
+Use the Expo development server for the native app:
+
+```bash
+bun run dev:native
+```
 
 ## UI Customization
 
@@ -80,7 +100,7 @@ If you want to add app-specific blocks instead of shared primitives, run the sha
 
 ### Docker Compose
 
-- Target: web + server
+- Target: web + server + Postgres + MinIO
 - Config: `docker-compose.yml` (app Dockerfiles live in `apps/*/Dockerfile`)
 - Build images: bun run docker:build
 - Start: bun run docker:up

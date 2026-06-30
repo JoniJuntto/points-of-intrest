@@ -1,9 +1,9 @@
 import { expect, test } from "bun:test";
 
 import {
-	PLACES_REFRESH_MS,
 	haversineMeters,
 	normalizeOverpassElements,
+	PLACES_REFRESH_MS,
 	shouldRefetchPlaces,
 } from "./places";
 

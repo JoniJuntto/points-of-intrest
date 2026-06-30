@@ -2,7 +2,7 @@ import { env } from "@poigame/env/native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useRef, useState } from "react";
-import { Pressable, Text, View, Alert } from "react-native";
+import { Alert, Pressable, Text, View } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Svg, { Path } from "react-native-svg";
@@ -20,7 +20,11 @@ function agentLog(payload: Record<string, unknown>) {
 	fetch(DEBUG_LOG_URL, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ sessionId: "22fb80", ...payload, timestamp: Date.now() }),
+		body: JSON.stringify({
+			sessionId: "22fb80",
+			...payload,
+			timestamp: Date.now(),
+		}),
 	}).catch(() => {});
 }
 
