@@ -23,6 +23,7 @@
     "dotenv": "catalog:",
     "elysia": "catalog:",
     "evlog": "catalog:",
+    "sharp": "^0.35.2",
     "zod": "catalog:"
   },
   "devDependencies": {

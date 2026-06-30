@@ -1,6 +1,23 @@
 name: poigame
 
 services:
+  db:
+    build:
+      context: ./docker/db
+      dockerfile: Dockerfile
+    container_name: poigame-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      PGDATA: /data/postgres
+      PGPORT: ${POSTGRES_PORT:-5432}
+      POSTGRES_SCHEMA: public
+    volumes:
+      - db_data:/data/postgres
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
   web:
     build:
       context: .
@@ -30,6 +47,17 @@ services:
         required: false
     environment:
       CORS_ORIGIN: http://localhost:3001
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/postgres
+      S3_ENDPOINT: http://minio:9000
+      S3_REGION: us-east-1
+      S3_BUCKET: poigame
+      S3_ACCESS_KEY_ID: minioadmin
+      S3_SECRET_ACCESS_KEY: minioadmin
+    depends_on:
+      db:
+        condition: service_started
+      minio-init:
+        condition: service_completed_successfully
     healthcheck:
       test:
         [
@@ -43,3 +71,31 @@ services:
       retries: 5
       start_period: 10s
     restart: unless-stopped
+
+  minio:
+    image: minio/minio:latest
+    container_name: poigame-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    restart: unless-stopped
+
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      until mc alias set local http://minio:9000 minioadmin minioadmin; do sleep 1; done;
+      mc mb local/poigame --ignore-existing;
+      "
+
+volumes:
+  db_data:
+  minio_data:

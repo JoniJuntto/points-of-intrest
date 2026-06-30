@@ -8,10 +8,30 @@
     },
     "name": "poigame",
     "slug": "poigame",
-    "plugins": ["expo-font"],
+    "plugins": [
+      "expo-font",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow poigame to use your camera to capture places."
+        }
+      ],
+      [
+        "expo-maps",
+        {
+          "requestLocationPermission": true,
+          "locationPermission": "Allow poigame to use your location to make sure you find your way to the places you want to go",
+          "NSLocationWhenInUseUsageDescription": "Allow poigame to use your location to make sure you find your way to the places you want to go"
+        }
+      ]
+    ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "ios": {
+      "bundleIdentifier": "com.jonijuntto.poigame",
+      "appleTeamId": "VKN9G4GC43"
     }
   }
 }

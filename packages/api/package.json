@@ -1,27 +1,30 @@
 {
-  "name": "@poigame/api",
-  "type": "module",
-  "exports": {
-    ".": {
-      "default": "./src/index.ts"
-    },
-    "./*": {
-      "default": "./src/*.ts"
-    }
-  },
-  "scripts": {},
-  "dependencies": {
-    "@poigame/auth": "workspace:*",
-    "@poigame/db": "workspace:*",
-    "@poigame/env": "workspace:*",
-    "@trpc/client": "catalog:",
-    "@trpc/server": "catalog:",
-    "dotenv": "catalog:",
-    "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@poigame/config": "workspace:*",
-    "elysia": "catalog:",
-    "typescript": "catalog:"
-  }
+	"name": "@poigame/api",
+	"type": "module",
+	"exports": {
+		".": {
+			"default": "./src/index.ts"
+		},
+		"./*": {
+			"default": "./src/*.ts"
+		}
+	},
+	"scripts": {},
+	"dependencies": {
+		"@aws-sdk/client-s3": "^3.1075.0",
+		"@poigame/auth": "workspace:*",
+		"@poigame/db": "workspace:*",
+		"@poigame/env": "workspace:*",
+		"@trpc/client": "catalog:",
+		"@trpc/server": "catalog:",
+		"dotenv": "catalog:",
+		"drizzle-orm": "^0.45.1",
+		"sharp": "^0.35.2",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@poigame/config": "workspace:*",
+		"elysia": "catalog:",
+		"typescript": "catalog:"
+	}
 }

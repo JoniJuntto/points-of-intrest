@@ -1,0 +1,1 @@
+ALTER TABLE "collected_places" ADD COLUMN "photo_key" text;
