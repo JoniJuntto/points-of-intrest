@@ -62,16 +62,28 @@ cd /opt/poigame
 
 ```env
 NODE_ENV=production
-DATABASE_URL=postgresql://<user>:<pass>@<host>:<port>/<db>?sslmode=require
-BETTER_AUTH_SECRET=<run: openssl rand -base64 48>
+DATABASE_URL=postgres://<user>:<pass>@<db-host>:<db-port>/poigame?sslmode=verify-full&sslrootcert=/pg-ca.pem
+BETTER_AUTH_SECRET=<random-32-chars>
 BETTER_AUTH_URL=https://poiapi.arvoitus.com
 CORS_ORIGIN=https://poi.arvoitus.com
-S3_ENDPOINT=https://<name>.<zone>.upcloudobjects.com
-S3_REGION=<upcloud-region>
+S3_ENDPOINT=https://vi9f8.upcloudobjects.com
+S3_REGION=EUROPE-1
 S3_BUCKET=poigame
 S3_ACCESS_KEY_ID=<access-key>
 S3_SECRET_ACCESS_KEY=<secret-key>
 ```
+
+> **Postgres TLS**: UpCloud managed Postgres presents a self-signed CA, and
+> `node-postgres` verifies certs under `sslmode=require` — connections fail with
+> `SELF_SIGNED_CERT_IN_CHAIN`. Save the CA on the server and pin it:
+>
+> ```bash
+> openssl s_client -showcerts -starttls postgres -connect <db-host>:<db-port> </dev/null 2>/dev/null \
+>   | awk '/BEGIN CERTIFICATE/,/END CERTIFICATE/' > /opt/poigame/pg-ca.pem
+> ```
+>
+> `docker-compose.prod.yml` mounts `./pg-ca.pem` at `/pg-ca.pem` inside the server
+> container. Use `sslmode=verify-full&sslrootcert=/pg-ca.pem` in `DATABASE_URL` as above.
 
 Web has no runtime env — `VITE_SERVER_URL` is **baked at build time** (step 5).
 
@@ -136,7 +148,8 @@ Schema lives in `@poigame/db`. Push it against the managed DB (one-off):
 
 ```bash
 docker compose -f docker-compose.prod.yml run --rm \
-  -e DATABASE_URL="postgresql://<user>:<pass>@<host>:<port>/<db>?sslmode=require" \
+  -v ./pg-ca.pem:/pg-ca.pem:ro \
+  -e DATABASE_URL="postgresql://<user>:<pass>@<host>:<port>/<db>?sslmode=verify-full&sslrootcert=/pg-ca.pem" \
   server sh -c "cd /app && bun run db:migrate"
 ```
 

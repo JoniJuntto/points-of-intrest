@@ -10,6 +10,8 @@ services:
       - "127.0.0.1:47321:3000"
     env_file:
       - apps/server/.env
+    volumes:
+      - ./pg-ca.pem:/pg-ca.pem:ro
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://localhost:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]

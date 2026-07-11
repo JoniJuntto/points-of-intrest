@@ -1,0 +1,7 @@
+poiapi.arvoitus.com {
+    reverse_proxy 127.0.0.1:47321
+}
+
+poi.arvoitus.com {
+    reverse_proxy 127.0.0.1:47322
+}
