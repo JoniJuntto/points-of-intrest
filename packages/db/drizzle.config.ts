@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 import { defineConfig } from "drizzle-kit";
 
+import { getPgSslConfig, stripSslParams } from "./src/pg-connection";
+
 dotenv.config({
 	path: "../../apps/server/.env",
 });
@@ -17,11 +19,20 @@ function getMigrateDatabaseUrl() {
 	return url;
 }
 
+function getDbCredentials() {
+	const url = stripSslParams(getMigrateDatabaseUrl());
+	const ssl = getPgSslConfig();
+
+	if (ssl) {
+		return { url, ssl };
+	}
+
+	return { url };
+}
+
 export default defineConfig({
 	schema: "./src/schema",
 	out: "./src/migrations",
 	dialect: "postgresql",
-	dbCredentials: {
-		url: getMigrateDatabaseUrl(),
-	},
+	dbCredentials: getDbCredentials(),
 });

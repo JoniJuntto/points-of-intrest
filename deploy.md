@@ -62,7 +62,7 @@ cd /opt/poigame
 
 ```env
 NODE_ENV=production
-DATABASE_URL=postgres://<user>:<pass>@<db-host>:<db-port>/poigame?sslmode=verify-full&sslrootcert=/pg-ca.pem
+DATABASE_URL=postgres://<user>:<pass>@<db-host>:<db-port>/poigame
 BETTER_AUTH_SECRET=<random-32-chars>
 BETTER_AUTH_URL=https://poiapi.arvoitus.com
 CORS_ORIGIN=https://poi.arvoitus.com
@@ -73,17 +73,20 @@ S3_ACCESS_KEY_ID=<access-key>
 S3_SECRET_ACCESS_KEY=<secret-key>
 ```
 
-> **Postgres TLS**: UpCloud managed Postgres presents a self-signed CA, and
-> `node-postgres` verifies certs under `sslmode=require` — connections fail with
-> `SELF_SIGNED_CERT_IN_CHAIN`. Save the CA on the server and pin it:
+> **Postgres TLS**: UpCloud managed Postgres presents a self-signed CA. Save it on
+> the server:
 >
 > ```bash
 > openssl s_client -showcerts -starttls postgres -connect <db-host>:<db-port> </dev/null 2>/dev/null \
 >   | awk '/BEGIN CERTIFICATE/,/END CERTIFICATE/' > /opt/poigame/pg-ca.pem
 > ```
 >
-> `docker-compose.prod.yml` mounts `./pg-ca.pem` at `/pg-ca.pem` inside the server
-> container. Use `sslmode=verify-full&sslrootcert=/pg-ca.pem` in `DATABASE_URL` as above.
+> `docker-compose.prod.yml` mounts `./pg-ca.pem` at `/pg-ca.pem`. The app reads that
+> file automatically and configures TLS via the `ssl` object.
+>
+> **Do not** put `sslmode`, `sslrootcert`, or other SSL params in `DATABASE_URL`.
+> `node-postgres` silently ignores your CA when those are in the connection string,
+> which produces `SELF_SIGNED_CERT_IN_CHAIN` even with a correct `pg-ca.pem`.
 
 Web has no runtime env — `VITE_SERVER_URL` is **baked at build time** (step 5).
 
@@ -149,7 +152,7 @@ Schema lives in `@poigame/db`. Push it against the managed DB (one-off):
 ```bash
 docker compose -f docker-compose.prod.yml run --rm \
   -v ./pg-ca.pem:/pg-ca.pem:ro \
-  -e DATABASE_URL="postgresql://<user>:<pass>@<host>:<port>/<db>?sslmode=verify-full&sslrootcert=/pg-ca.pem" \
+  -e DATABASE_URL="postgresql://<user>:<pass>@<host>:<port>/<db>" \
   server sh -c "cd /app && bun run db:migrate"
 ```
 

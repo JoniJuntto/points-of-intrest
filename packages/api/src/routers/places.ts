@@ -23,9 +23,10 @@ import {
 } from "../services/places";
 
 const RADIUS_M = 20_000;
+const OVERPASS_RADIUS_M = 10_000;
 const CAPTURE_RADIUS_M = 1_000;
 const LIMIT = 25;
-const OVERPASS_TIMEOUT_MS = 6_000;
+const OVERPASS_TIMEOUT_MS = 60_000;
 type DbPlace = typeof places.$inferSelect;
 
 const nearbyInput = z.object({
@@ -320,11 +321,11 @@ function overpassQuery(latitude: number, longitude: number) {
 	return `
 [out:json][timeout:10];
 (
-  nwr(around:${RADIUS_M},${latitude},${longitude})[tourism~"^(attraction|museum|viewpoint|artwork)$"];
-  nwr(around:${RADIUS_M},${latitude},${longitude})[historic~"^(monument|memorial|castle|ruins|archaeological_site)$"];
-  nwr(around:${RADIUS_M},${latitude},${longitude})[railway~"^(station|halt)$"];
-  nwr(around:${RADIUS_M},${latitude},${longitude})[amenity~"^(school|library|townhall|place_of_worship)$"];
-  nwr(around:${RADIUS_M},${latitude},${longitude})[leisure~"^(sports_centre|stadium|playground|park|garden|nature_reserve)$"];
+  nwr(around:${OVERPASS_RADIUS_M},${latitude},${longitude})[tourism~"^(attraction|museum|viewpoint|artwork)$"];
+  nwr(around:${OVERPASS_RADIUS_M},${latitude},${longitude})[historic~"^(monument|memorial|castle|ruins|archaeological_site)$"];
+  nwr(around:${OVERPASS_RADIUS_M},${latitude},${longitude})[railway~"^(station|halt)$"];
+  nwr(around:${OVERPASS_RADIUS_M},${latitude},${longitude})[amenity~"^(school|library|townhall|place_of_worship)$"];
+  nwr(around:${OVERPASS_RADIUS_M},${latitude},${longitude})[leisure~"^(sports_centre|stadium|playground|park|garden|nature_reserve)$"];
 );
 out center tags;
 `;
