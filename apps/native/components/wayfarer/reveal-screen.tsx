@@ -51,24 +51,8 @@ export function RevealScreen() {
 				overflow: "hidden",
 			}}
 		>
-			<Text
-				style={{
-					position: "absolute",
-					top: insets.top + 14,
-					left: 0,
-					right: 0,
-					textAlign: "center",
-					fontFamily: MONO,
-					fontSize: 11,
-					letterSpacing: 2.5,
-					color: "#9a8f7e",
-				}}
-			>
-				PASSPORT · STAMPED
-			</Text>
 			<Confetti />
 			<RevealPolaroid place={place} top={insets.top + 90} />
-
 			<View
 				style={{
 					position: "absolute",
@@ -101,50 +85,6 @@ export function RevealScreen() {
 				>
 					{place.name} is in your passport.
 				</Animated.Text>
-
-				<Animated.View
-					entering={FadeInDown.delay(1050).duration(500)}
-					style={{ marginTop: 18, width: 240 }}
-				>
-					<View
-						style={{
-							flexDirection: "row",
-							justifyContent: "space-between",
-							marginBottom: 6,
-						}}
-					>
-						<Text style={{ fontFamily: MONO, fontSize: 11, color: "#9a8f7e" }}>
-							{capturedCount} OF {total} PLACES
-						</Text>
-						<Text
-							style={{
-								fontFamily: MONO,
-								fontSize: 11,
-								fontWeight: "700",
-								color: TEAL,
-							}}
-						>
-							{progress}%
-						</Text>
-					</View>
-					<View
-						style={{
-							height: 7,
-							borderRadius: 4,
-							backgroundColor: "rgba(34,27,46,.1)",
-							overflow: "hidden",
-						}}
-					>
-						<View
-							style={{
-								height: "100%",
-								width: `${progress}%`,
-								borderRadius: 4,
-								backgroundColor: "#1FB8A6",
-							}}
-						/>
-					</View>
-				</Animated.View>
 
 				<Animated.View
 					entering={FadeInDown.delay(1100).duration(500)}

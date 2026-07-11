@@ -1,4 +1,42 @@
+import type * as React from "react";
 import Svg, { Circle, Path, Rect } from "react-native-svg";
+
+type ProfileIconProps = {
+	size?: number;
+	stroke?: string;
+	className?: string;
+};
+
+export const ProfileIcon: React.FC<ProfileIconProps> = ({
+	size = 22,
+	stroke = "#fff",
+	className,
+}) => (
+	<Svg
+		width={size}
+		height={size}
+		viewBox="0 0 24 24"
+		fill="none"
+		className={className}
+		accessible={true}
+		accessibilityLabel="Profile Icon"
+	>
+		<Path
+			d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"
+			stroke={stroke}
+			strokeWidth={1.7}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		/>
+		<Path
+			d="M18 20v-2a4 4 0 0 0-4-4H10a4 4 0 0 0-4 4v2"
+			stroke={stroke}
+			strokeWidth={1.7}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		/>
+	</Svg>
+);
 
 export function AlbumIcon({ size = 22 }: { size?: number }) {
 	return (

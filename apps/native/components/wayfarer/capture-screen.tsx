@@ -2,7 +2,7 @@ import { env } from "@poigame/env/native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useRef, useState } from "react";
-import { Alert, Pressable, Text, View } from "react-native";
+import { Alert, Image, Pressable, Text, View } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Svg, { Path } from "react-native-svg";
@@ -11,10 +11,15 @@ import Reticle from "@/components/Reticle";
 import { AlbumIcon, CloseIcon } from "@/components/wayfarer/icons";
 import { useWayfarer } from "@/contexts/wayfarer-context";
 import { ACCENT, MONO, RANGE_M } from "@/lib/common-values";
+import {
+	devCapturePhotoBase64,
+	skipCameraOnSimulator,
+} from "@/lib/dev-capture-photo";
 import { celebrate, tap } from "@/lib/haptics";
 import { firstParam } from "@/lib/wayfarer-utils";
 
 const DEBUG_LOG_URL = `${env.EXPO_PUBLIC_SERVER_URL}/api/debug-log`;
+const DEV_CAPTURE_ICON = require("@/assets/images/icon.png");
 
 function agentLog(payload: Record<string, unknown>) {
 	fetch(DEBUG_LOG_URL, {
@@ -81,8 +86,7 @@ export function CaptureScreen() {
 			!placeId ||
 			!userLoc ||
 			place.dist > RANGE_M ||
-			!permission?.granted ||
-			!cameraReady;
+			(!skipCameraOnSimulator && (!permission?.granted || !cameraReady));
 		// #region agent log
 		agentLog({
 			location: "capture-screen.tsx:shutter:entry",
@@ -105,30 +109,48 @@ export function CaptureScreen() {
 		setCapturing(true);
 		let photoBase64 = "";
 		try {
-			const photo = await cameraRef.current?.takePictureAsync({
-				base64: true,
-				quality: 0.8,
-			});
-			photoBase64 = photo?.base64 ?? "";
-			// #region agent log
-			agentLog({
-				location: "capture-screen.tsx:shutter:photo",
-				message: "takePictureAsync result",
-				data: {
-					hasPhoto: !!photo,
-					hasBase64: !!photoBase64,
-					base64Length: photoBase64.length,
-					hasUri: !!photo?.uri,
-					uriPrefix: photo?.uri?.slice(0, 30) ?? null,
-				},
-				hypothesisId: "H2,H4",
-			});
-			// #endregion
+			if (skipCameraOnSimulator) {
+				photoBase64 = await devCapturePhotoBase64();
+				// #region agent log
+				agentLog({
+					location: "capture-screen.tsx:shutter:photo",
+					message: "dev placeholder photo loaded",
+					data: {
+						hasBase64: !!photoBase64,
+						base64Length: photoBase64.length,
+						skipCameraOnSimulator: true,
+					},
+					hypothesisId: "H2,H4",
+				});
+				// #endregion
+			} else {
+				const photo = await cameraRef.current?.takePictureAsync({
+					base64: true,
+					quality: 0.8,
+				});
+				photoBase64 = photo?.base64 ?? "";
+				// #region agent log
+				agentLog({
+					location: "capture-screen.tsx:shutter:photo",
+					message: "takePictureAsync result",
+					data: {
+						hasPhoto: !!photo,
+						hasBase64: !!photoBase64,
+						base64Length: photoBase64.length,
+						hasUri: !!photo?.uri,
+						uriPrefix: photo?.uri?.slice(0, 30) ?? null,
+					},
+					hypothesisId: "H2,H4",
+				});
+				// #endregion
+			}
 		} catch (photoError) {
 			// #region agent log
 			agentLog({
 				location: "capture-screen.tsx:shutter:photo-error",
-				message: "takePictureAsync threw",
+				message: skipCameraOnSimulator
+					? "dev placeholder photo failed"
+					: "takePictureAsync threw",
 				data: {
 					error:
 						photoError instanceof Error
@@ -289,7 +311,19 @@ export function CaptureScreen() {
 					justifyContent: "center",
 				}}
 			>
-				{permission?.granted ? (
+				{skipCameraOnSimulator ? (
+					<Image
+						source={DEV_CAPTURE_ICON}
+						resizeMode="cover"
+						style={{
+							position: "absolute",
+							top: 0,
+							right: 0,
+							bottom: 0,
+							left: 0,
+						}}
+					/>
+				) : permission?.granted ? (
 					<CameraView
 						ref={cameraRef}
 						facing="back"
@@ -404,7 +438,9 @@ export function CaptureScreen() {
 					color: "rgba(255,255,255,.78)",
 				}}
 			>
-				Frame the landmark and tap to capture
+				{skipCameraOnSimulator
+					? "Simulator dev mode — tap to capture with placeholder"
+					: "Frame the landmark and tap to capture"}
 			</Text>
 
 			<View

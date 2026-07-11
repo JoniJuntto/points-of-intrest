@@ -1,27 +1,27 @@
 {
 	"expo": {
-		"scheme": "poigame",
+		"scheme": "Pleises",
 		"userInterfaceStyle": "automatic",
 		"orientation": "default",
 		"web": {
 			"bundler": "metro"
 		},
-		"name": "poigame",
-		"slug": "poigame",
+		"name": "Pleises",
+		"slug": "Pleises",
 		"plugins": [
 			"expo-font",
 			[
 				"expo-camera",
 				{
-					"cameraPermission": "Allow poigame to use your camera to capture places."
+					"cameraPermission": "Allow Pleises to use your camera to capture places."
 				}
 			],
 			[
 				"expo-maps",
 				{
 					"requestLocationPermission": true,
-					"locationPermission": "Allow poigame to use your location to make sure you find your way to the places you want to go",
-					"NSLocationWhenInUseUsageDescription": "Allow poigame to use your location to make sure you find your way to the places you want to go"
+					"locationPermission": "Allow Pleises to use your location to make sure you find your way to the places you want to go",
+					"NSLocationWhenInUseUsageDescription": "Allow Pleises to use your location to make sure you find your way to the places you want to go"
 				}
 			]
 		],
@@ -30,8 +30,11 @@
 			"reactCompiler": true
 		},
 		"ios": {
-			"bundleIdentifier": "com.jonijuntto.poigame",
+			"bundleIdentifier": "com.pohinagroup.pleises",
 			"appleTeamId": "VKN9G4GC43"
+		},
+		"android": {
+			"package": "com.pohinagroup.pleises"
 		}
 	}
 }

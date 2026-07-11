@@ -102,38 +102,6 @@ function PlaceSheetContent({
 }) {
 	return (
 		<View style={{ gap: 0 }}>
-			<View
-				style={{
-					height: 140,
-					borderRadius: 20,
-					backgroundColor: place.color,
-					overflow: "hidden",
-					alignItems: "center",
-					justifyContent: "center",
-					shadowColor: INK,
-					shadowOpacity: 0.2,
-					shadowRadius: 20,
-					shadowOffset: { width: 0, height: 8 },
-				}}
-			>
-				<View style={{ opacity: 0.92 }}>
-					<Glyph cat={place.cat} size={56} color="#fff" />
-				</View>
-				<Text
-					style={{
-						position: "absolute",
-						left: 14,
-						bottom: 12,
-						fontFamily: MONO,
-						fontSize: 10,
-						letterSpacing: 1,
-						color: "rgba(255,255,255,.85)",
-					}}
-				>
-					PREVIEW · {place.coord}
-				</Text>
-			</View>
-
 			<Text
 				style={{
 					fontFamily: MONO,
@@ -155,18 +123,6 @@ function PlaceSheetContent({
 				}}
 			>
 				{place.name}
-			</Text>
-			<Text
-				style={{
-					fontFamily: SERIF,
-					fontStyle: "italic",
-					fontSize: 15,
-					lineHeight: 22,
-					color: "#6b6357",
-					marginTop: 7,
-				}}
-			>
-				{place.blurb}
 			</Text>
 
 			<View
@@ -204,9 +160,7 @@ function PlaceSheetContent({
 							lineHeight: 18,
 						}}
 					>
-						{inRange
-							? "You're close enough — capture it!"
-							: "Get within 1 km to capture"}
+						{inRange ? "Capture it!" : "Get within 1 km to capture"}
 					</Text>
 				</View>
 			</View>

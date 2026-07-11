@@ -7,12 +7,12 @@ import { Text, View } from "react-native";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthScreen } from "@/components/wayfarer/auth-screen";
 import { WayfarerProvider } from "@/contexts/wayfarer-context";
-import { authClient } from "@/lib/auth-client";
+import { useEnsureSession } from "@/hooks/use-ensure-session";
 
 function DrawerLayout() {
 	const themeColorForeground = useThemeColor("foreground");
 	const themeColorBackground = useThemeColor("background");
-	const { data: session, isPending } = authClient.useSession();
+	const { session, isReady, isPending, needsAuth } = useEnsureSession();
 
 	const renderThemeToggle = useCallback(() => <ThemeToggle />, []);
 
@@ -31,8 +31,23 @@ function DrawerLayout() {
 		);
 	}
 
-	if (!session) {
+	if (needsAuth && !session) {
 		return <AuthScreen />;
+	}
+
+	if (!session || !isReady) {
+		return (
+			<View
+				style={{
+					flex: 1,
+					alignItems: "center",
+					justifyContent: "center",
+					backgroundColor: themeColorBackground,
+				}}
+			>
+				<Spinner size="lg" />
+			</View>
+		);
 	}
 
 	return (
@@ -69,6 +84,10 @@ function DrawerLayout() {
 				/>
 				<Drawer.Screen
 					name="album"
+					options={{ drawerItemStyle: { display: "none" }, headerShown: false }}
+				/>
+				<Drawer.Screen
+					name="profile"
 					options={{ drawerItemStyle: { display: "none" }, headerShown: false }}
 				/>
 				<Drawer.Screen
