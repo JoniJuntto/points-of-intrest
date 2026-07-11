@@ -34,7 +34,18 @@
 			"appleTeamId": "VKN9G4GC43"
 		},
 		"android": {
-			"package": "com.pohinagroup.pleises"
+			"package": "com.pohinagroup.pleises",
+			"permissions": [
+				"android.permission.CAMERA",
+				"android.permission.RECORD_AUDIO",
+				"android.permission.ACCESS_COARSE_LOCATION",
+				"android.permission.ACCESS_FINE_LOCATION"
+			]
+		},
+		"extra": {
+			"eas": {
+				"projectId": "68506fd4-ea2f-4811-a918-940305252e3e"
+			}
 		}
 	}
 }
